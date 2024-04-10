@@ -9,9 +9,9 @@ screen = pygame.image.load("C:/Users/Tactical_IT_2/Documents/Scrips/TEST/pract/p
 icon = pygame.image.load("C:/Users/Tactical_IT_2/Documents/Scrips/TEST/pract/python/Día 10/ovni.png")
 player_icon = pygame.image.load("C:/Users/Tactical_IT_2/Documents/Scrips/TEST/pract/python/Día 10/astronave.png")
 enemy1_icon = pygame.image.load("C:/Users/Tactical_IT_2/Documents/Scrips/TEST/pract/python/Día 10/extraterrestre.png")
+bullet1_icon = pygame.image.load("C:/Users/Tactical_IT_2/Documents/Scrips/TEST/pract/python/Día 10/bala.png")
 
-#display size
-
+#display sizE
 display = pygame.display.set_mode((1000, 800))
 
 
@@ -24,6 +24,7 @@ pygame.display.set_icon(icon)
 
 #player
     #initial position
+
 player_icon_x = 468
 player_icon_y = 600
 x_change = 0
@@ -31,11 +32,20 @@ y_change = 0
 
 #enemy
     #initial position, random
+
 enemy1_icon_x = random.randint(0, 936)
 enemy1_icon_y = random.randint(0, 100)
-
 xe_change = 0.5
 ye_change = 50
+bullet_visible = False
+
+#bullet
+    #initial position
+
+bullet_icon_x = 0
+bullet_icon_y = 0
+xb_change = 0
+yb_change = 1
 
 
 #function player movement 
@@ -45,6 +55,12 @@ def player(x,y):
 #function enemy movement 
 def enemy1(x,y):
     display.blit(enemy1_icon,(x,y))
+
+#function bullet 
+def bullet(x,y):
+    global bullet_visible
+    bullet_visible = True
+    display.blit(bullet1_icon,(x + 20, y + 20))
 
 #game loop
     
@@ -65,12 +81,16 @@ while flag:
                 x_change = -1
             if event.key == pygame.K_RIGHT:
                 x_change = +1
+            if event.key == pygame.K_SPACE:
+                bullet(player_icon_x,player_icon_y)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 y_change = -1
             if event.key == pygame.K_DOWN:
                 y_change = +1
+            # if event.key == pygame.K_SPACE:
+            #     bullet(player_icon_x,player_icon_y)
 
         # condition about the movement of the skyrocket, when we press the up key the skyrocket moves 0.2px up, when we press the down key the skyrocket moves 0.2px down.
         if event.type == pygame.KEYUP:
@@ -102,9 +122,16 @@ while flag:
     if enemy1_icon_x <= 0:
         xe_change = 0.5
         enemy1_icon_y += ye_change
+
     elif enemy1_icon_x >= 936:
         xe_change = -0.5
         enemy1_icon_y += ye_change
+
+    # mov bullet
+
+    if bullet_visible:
+        bullet(player_icon_x,player_icon_y + bullet_icon_y)
+        bullet_icon_y -= yb_change
 
 
 
